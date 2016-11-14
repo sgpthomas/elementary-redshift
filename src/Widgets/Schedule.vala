@@ -19,17 +19,9 @@
  * Authored by: Sam Thomas <sgpthomas@gmail.com>
  */
 
-namespace ElementaryRedshift.Widgets {
+ namespace ElementaryRedshift.Widgets {
 
-    public class SettingLabel : Gtk.Label {
+    public class Schedule : Gtk.Grid {
         
-        public SettingLabel (string label) {
-            Object (label: label);
-        }
-
-        construct {
-            halign = Gtk.Align.END;
-            margin_start = 12;
-        }
-    }    
-}
+    }
+ }

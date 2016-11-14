@@ -12,6 +12,11 @@ set (PLUGTITLE "Redshift")
 # Set the version for the plug
 set (VERSION "0.1")
 
+# Set the Title to use for the Indicator (May be used in future features)
+set (INDICATORTITLE "Elementary Redshift")
+# The description of what your Indicator is
+set (INDICATORDESCRIPTION "Adjusts the color temperature of your screen according to your surroundings")
+
 # Set the Name of the plug, should be an executable command, lowercase, no spaces 
 project (elementary-redshift)
 
@@ -20,9 +25,13 @@ project (elementary-redshift)
 #########################################################
 
 include (GNUInstallDirs)
-set (DATADIR "${CMAKE_INSTALL_FULL_LIBDIR}/switchboard")
-set (PKGDATADIR "${DATADIR}/${PLUGCATEGORY}/${CMAKE_PROJECT_NAME}")
-set (GETTEXT_PACKAGE "${CMAKE_PROJECT_NAME}-plug")
+set (PLUG_DATADIR "${CMAKE_INSTALL_FULL_LIBDIR}/switchboard")
+set (PLUG_PKGDATADIR "${PLUG_DATADIR}/${PLUGCATEGORY}/${CMAKE_PROJECT_NAME}")
+
+set (WING_DATADIR "${CMAKE_INSTALL_FULL_LIBDIR}/wingpanel")
+set (WING_PKGDATADIR "${WING_DATADIR}/${CMAKE_PROJECT_NAME}")
+
+set (GETTEXT_PACKAGE "${CMAKE_PROJECT_NAME}")
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -39,6 +48,15 @@ include (CPack)
 add_custom_target (dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
 # Traslation stuff
-add_subdirectory (po)
+# add_subdirectory (po)
 
 add_subdirectory(src)
+
+# uninstall command / target
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)

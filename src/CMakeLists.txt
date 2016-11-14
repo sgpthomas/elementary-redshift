@@ -1,7 +1,7 @@
 find_package (PkgConfig)
 
 # Add all your dependencies to the list below
-pkg_check_modules (DEPS REQUIRED gthread-2.0 gtk+-3.0 switchboard-2.0 granite)
+pkg_check_modules (DEPS REQUIRED gthread-2.0 gtk+-3.0 switchboard-2.0 wingpanel-2.0 granite)
 
 add_definitions (${DEPS_CFLAGS})
 link_directories (${DEPS_LIBRARY_DIRS})
@@ -11,21 +11,42 @@ include (ValaVersion)
 ensure_vala_version ("0.22.0" MINIMUM)
 
 include (ValaPrecompile)
-# Add all your vala files and requires packages to the List below to include them in the build
-vala_precompile (VALA_C ${CMAKE_PROJECT_NAME}
+# Build Plug
+vala_precompile (PLUG_VALA_C ${CMAKE_PROJECT_NAME}-plug
     Plug.vala
+    Widgets/Schedule.vala
     Widgets/SettingLabel.vala
+    Widgets/Temperature.vala
     ${CMAKE_CURRENT_BINARY_DIR}/config.vala
 PACKAGES
     gtk+-3.0
     switchboard-2.0
+    wingpanel-2.0
     granite
 OPTIONS
     --thread
 )
 
-add_library (${CMAKE_PROJECT_NAME} MODULE ${VALA_C})
-target_link_libraries (${CMAKE_PROJECT_NAME} ${DEPS_LIBRARIES}) 
+add_library (${CMAKE_PROJECT_NAME}-plug MODULE ${PLUG_VALA_C})
+target_link_libraries (${CMAKE_PROJECT_NAME}-plug ${DEPS_LIBRARIES}) 
+
+# Build Wingpanel Indicator
+vala_precompile (WING_VALA_C ${CMAKE_PROJECT_NAME}-wing
+    Indicator.vala
+    ${CMAKE_CURRENT_BINARY_DIR}/config.vala
+PACKAGES
+    gtk+-3.0
+    switchboard-2.0
+    wingpanel-2.0
+    granite
+OPTIONS
+    --thread
+)
+
+add_library (${CMAKE_PROJECT_NAME}-wing MODULE ${WING_VALA_C})
+target_link_libraries (${CMAKE_PROJECT_NAME}-wing ${DEPS_LIBRARIES})
+message (${DEPS_LIBRARIES})
 
 # Installation
-install (TARGETS ${CMAKE_PROJECT_NAME} DESTINATION ${PKGDATADIR})
+install (TARGETS ${CMAKE_PROJECT_NAME}-plug DESTINATION ${PLUG_PKGDATADIR})
+install (TARGETS ${CMAKE_PROJECT_NAME}-wing DESTINATION ${WING_PKGDATADIR})
