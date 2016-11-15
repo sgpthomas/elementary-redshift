@@ -57,9 +57,9 @@
             // attach things to the grid
             attach (temperature_label, 0, 0, 1, 1);
             attach (new SettingLabel (_("Day Temperature:")), 0, 1, 1, 1);
-            attach (day_temp_scale, 1, 1, 2, 1);
+            attach (day_temp_scale, 1, 1, 1, 1);
             attach (new SettingLabel (_("Night Temperature:")), 0, 2, 1, 1);
-            attach (night_temp_scale, 1, 2, 2, 1);
+            attach (night_temp_scale, 1, 2, 1, 1);
         }
     }
  }

@@ -22,6 +22,39 @@
  namespace ElementaryRedshift.Widgets {
 
     public class Schedule : Gtk.Grid {
+
+        public Schedule () {
+            Object (margin: 12,
+                    row_spacing: 12,
+                    column_spacing: 12,
+                    halign: Gtk.Align.CENTER);
+        }
+
+        construct {
+            // header
+            var schedule_label = new Gtk.Label (_("Schedule"));
+            schedule_label.xalign = 0;
+            schedule_label.hexpand = true;
+            schedule_label.get_style_context ().add_class ("h4");
+            Plug.start_size_group.add_widget (schedule_label);
+
+            // automatic switch
+            var auto_switch = new Gtk.Switch ();
+            auto_switch.halign = Gtk.Align.START;
+            auto_switch.margin_end = 8;
+            // Plug.end_size_group.add_widget (auto_switch);
+
+            var help_icon = new Gtk.Image.from_icon_name ("help-info-symbolic", Gtk.IconSize.BUTTON);
+            help_icon.halign = Gtk.Align.START;
+            help_icon.hexpand = true;
+            help_icon.tooltip_text = _("Will automatically use your location to adjust the screen based on day and night cycles.");
+
+            // attach things
+            attach (schedule_label, 0, 0, 1, 1);
+            attach (new SettingLabel (_("Use location:")), 0, 1, 1, 1);
+            attach (auto_switch, 1, 1, 1, 1);
+            attach (help_icon, 2, 1, 1, 1);
+        }
         
     }
  }
