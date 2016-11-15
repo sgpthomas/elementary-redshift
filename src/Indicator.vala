@@ -73,7 +73,27 @@
         }
 
         private void create_grid () {
-            
+            main_grid = new Gtk.Grid ();
+
+            var active_toggle = new Wingpanel.Widgets.Switch (_("Redshift"));
+            active_toggle.get_style_context ().add_class ("h4");
+
+            var show_settings_button = new Wingpanel.Widgets.Button (_("Redshift Settings…"));
+            show_settings_button.clicked.connect (() => {
+                var list = new List<string> ();
+                list.append ("settings://redshift");
+                try {
+                    var appinfo = GLib.AppInfo.get_default_for_uri_scheme ("settings");
+                    appinfo.launch_uris (list, null);
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+                this.close ();
+            });
+
+            main_grid.attach (active_toggle, 0, 0, 1, 1);
+            main_grid.attach (new Wingpanel.Widgets.Separator (), 0, 1, 1, 1);
+            main_grid.attach (show_settings_button, 0, 2, 1, 1);
         }
     }
  }

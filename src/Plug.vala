@@ -33,7 +33,9 @@ namespace ElementaryRedshift {
                     code_name: Build.PLUGCODENAME,
                     display_name: _("Redshift"),
                     description: _("Adjusts the color temperature of your screen according to your surroundings"),
-                    icon: "redshift");
+                    icon: "redshift",
+                    supported_settings: new Gee.TreeMap<string, string?> (null, null));
+            supported_settings.set ("redshift", null);
             plug = this;
         }
 

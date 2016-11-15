@@ -23,13 +23,14 @@
 
     public class Temperature : Gtk.Grid {
 
-        construct {
-            // grid properties
-            margin = 12;
-            row_spacing = 12;
-            column_spacing = 12;
-            halign = Gtk.Align.CENTER;
+        public Temperature () {
+            Object (margin: 12,
+                    row_spacing: 12,
+                    column_spacing: 12,
+                    halign: Gtk.Align.CENTER);
+        }
 
+        construct {
             // header
             var temperature_label = new Gtk.Label (_("Temperature"));
             temperature_label.xalign = 0;
