@@ -23,6 +23,9 @@
 
     public class Schedule : Gtk.Grid {
 
+        Granite.Widgets.ModeButton mode_switcher;
+        Gtk.Stack stack;
+
         public Schedule () {
             Object (margin: 12,
                     row_spacing: 12,
@@ -38,22 +41,61 @@
             schedule_label.get_style_context ().add_class ("h4");
             Plug.start_size_group.add_widget (schedule_label);
 
-            // automatic switch
-            var auto_switch = new Gtk.Switch ();
-            auto_switch.halign = Gtk.Align.START;
-            auto_switch.margin_end = 8;
-            // Plug.end_size_group.add_widget (auto_switch);
+            mode_switcher = new Granite.Widgets.ModeButton ();
+            mode_switcher.append_text (_("None"));
+            mode_switcher.append_text (_("Auto"));
+            mode_switcher.append_text (_("Custom"));
+            Plug.end_size_group.add_widget (mode_switcher);
 
-            var help_icon = new Gtk.Image.from_icon_name ("help-info-symbolic", Gtk.IconSize.BUTTON);
-            help_icon.halign = Gtk.Align.START;
-            help_icon.hexpand = true;
-            help_icon.tooltip_text = _("Will automatically use your location to adjust the screen based on day and night cycles.");
+            // mode: none
+            var mode_none_label = new Gtk.Label (_("Don't turn on automatically."));
+            mode_none_label.wrap = true;
+            mode_none_label.justify = Gtk.Justification.CENTER;
+
+            // mode: automatic
+            var mode_auto_label = new Gtk.Label (_("Automatically use location to adjust the\nscreen temperature based on the time of day."));
+            mode_auto_label.wrap = true;
+            mode_auto_label.justify = Gtk.Justification.CENTER;
+
+            // mode: custom
+            var mode_custom_label = new Gtk.Label (_("Use custom schedule."));
+            mode_custom_label.wrap = true;
+            mode_custom_label.justify = Gtk.Justification.CENTER;
+
+            stack = new Gtk.Stack ();
+            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+            stack.add_named (mode_none_label, "none");
+            stack.add_named (mode_auto_label, "auto");
+            stack.add_named (mode_custom_label, "custom");
 
             // attach things
             attach (schedule_label, 0, 0, 1, 1);
-            attach (new SettingLabel (_("Use location:")), 0, 1, 1, 1);
-            attach (auto_switch, 1, 1, 1, 1);
-            attach (help_icon, 2, 1, 1, 1);
+            attach (new SettingLabel (_("Mode:")), 0, 1, 1, 1);
+            attach (mode_switcher, 1, 1, 1, 1);
+            attach (stack, 1, 2, 1, 1);
+
+            connect_signals ();
+            update ();
+        }
+
+        private void connect_signals () {
+            mode_switcher.mode_changed.connect ((w) => {
+                switch (mode_switcher.selected) {
+                    case 0:
+                        stack.set_visible_child_name ("none");
+                        break;
+                    case 1:
+                        stack.set_visible_child_name ("auto");
+                        break;
+                    case 2:
+                        stack.set_visible_child_name ("custom");
+                        break;
+                }
+            });
+        }
+
+        private void update () {
+            mode_switcher.selected = 0;
         }
         
     }

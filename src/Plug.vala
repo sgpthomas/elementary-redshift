@@ -73,8 +73,8 @@ namespace ElementaryRedshift {
 
             main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            main_box.add (new Widgets.Temperature ());
             main_box.add (new Widgets.Schedule ());
+            main_box.add (new Widgets.Temperature ());
 
             main_box.show_all ();
         }

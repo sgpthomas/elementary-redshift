@@ -42,7 +42,7 @@
             var day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 3000, 7000, 100);
             day_temp_scale.adjustment.value = 6500;
             day_temp_scale.add_mark (6500, Gtk.PositionType.BOTTOM, null);
-            day_temp_scale.width_request = 200;
+            // day_temp_scale.width_request = 200;
             day_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (day_temp_scale);
 
@@ -50,7 +50,7 @@
             var night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 3000, 7000, 100);
             night_temp_scale.adjustment.value = 3500;
             night_temp_scale.add_mark (3500, Gtk.PositionType.BOTTOM, null);
-            night_temp_scale.width_request = 200;
+            // night_temp_scale.width_request = 200;
             night_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (night_temp_scale);
 
