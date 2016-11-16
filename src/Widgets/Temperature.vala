@@ -39,18 +39,16 @@
             Plug.start_size_group.add_widget (temperature_label);
 
             // temperature scale for day time
-            var day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 3000, 7000, 100);
-            day_temp_scale.adjustment.value = 6500;
-            day_temp_scale.add_mark (6500, Gtk.PositionType.BOTTOM, null);
-            // day_temp_scale.width_request = 200;
+            var day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
+            day_temp_scale.adjustment.value = 65;
+            day_temp_scale.add_mark (65, Gtk.PositionType.BOTTOM, null);
             day_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (day_temp_scale);
 
             // temperature scale for night time
-            var night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 3000, 7000, 100);
-            night_temp_scale.adjustment.value = 3500;
-            night_temp_scale.add_mark (3500, Gtk.PositionType.BOTTOM, null);
-            // night_temp_scale.width_request = 200;
+            var night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
+            night_temp_scale.adjustment.value = 35;
+            night_temp_scale.add_mark (35, Gtk.PositionType.BOTTOM, null);
             night_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (night_temp_scale);
 
@@ -60,6 +58,15 @@
             attach (day_temp_scale, 1, 1, 1, 1);
             attach (new SettingLabel (_("Night Temperature:")), 0, 2, 1, 1);
             attach (night_temp_scale, 1, 2, 1, 1);
+
+            // format slider values
+            day_temp_scale.format_value.connect ((val) => {
+                return " %.f00 K".printf (val);
+            });
+
+            night_temp_scale.format_value.connect ((val) => {
+                return " %.f00 K".printf (val);
+            });
         }
     }
  }

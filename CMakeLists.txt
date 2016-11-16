@@ -51,6 +51,7 @@ add_custom_target (dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 # add_subdirectory (po)
 
 add_subdirectory(src)
+add_subdirectory(schemas)
 
 # uninstall command / target
 configure_file(

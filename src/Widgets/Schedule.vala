@@ -28,7 +28,7 @@
 
         public Schedule () {
             Object (margin: 12,
-                    row_spacing: 12,
+                    // row_spacing: 12,
                     column_spacing: 12,
                     halign: Gtk.Align.CENTER);
         }
@@ -42,6 +42,7 @@
             Plug.start_size_group.add_widget (schedule_label);
 
             mode_switcher = new Granite.Widgets.ModeButton ();
+            mode_switcher.margin_top = 12;
             mode_switcher.append_text (_("None"));
             mode_switcher.append_text (_("Auto"));
             mode_switcher.append_text (_("Custom"));
@@ -62,17 +63,32 @@
             mode_custom_label.wrap = true;
             mode_custom_label.justify = Gtk.Justification.CENTER;
 
+            var daytime = new Granite.Widgets.TimePicker ();
+            Plug.end_size_group.add_widget (daytime);
+            var nighttime = new Granite.Widgets.TimePicker ();
+            Plug.end_size_group.add_widget (nighttime);
+
+            var mode_custom_grid = new Gtk.Grid ();
+            mode_custom_grid.margin = 12;
+            mode_custom_grid.row_spacing = 12;
+            mode_custom_grid.column_spacing = 12;
+            mode_custom_grid.halign = Gtk.Align.CENTER;
+            mode_custom_grid.attach (new SettingLabel (_("Day starts:")), 0, 0, 1, 1);
+            mode_custom_grid.attach (daytime, 1, 0, 1, 1);
+            mode_custom_grid.attach (new SettingLabel (_("Night starts:")), 0, 1, 1, 1);
+            mode_custom_grid.attach (nighttime, 1, 1, 1, 1);
+
             stack = new Gtk.Stack ();
             stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             stack.add_named (mode_none_label, "none");
             stack.add_named (mode_auto_label, "auto");
-            stack.add_named (mode_custom_label, "custom");
+            stack.add_named (mode_custom_grid, "custom");
 
             // attach things
             attach (schedule_label, 0, 0, 1, 1);
-            attach (new SettingLabel (_("Mode:")), 0, 1, 1, 1);
-            attach (mode_switcher, 1, 1, 1, 1);
-            attach (stack, 1, 2, 1, 1);
+            // attach (new SettingLabel (_("Mode:")), 0, 1, 1, 1);
+            attach (mode_switcher, 0, 1, 1, 1);
+            attach (stack, 0, 2, 1, 1);
 
             connect_signals ();
             update ();
