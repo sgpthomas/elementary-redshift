@@ -14,6 +14,7 @@ include (ValaPrecompile)
 # Build Plug
 vala_precompile (PLUG_VALA_C ${CMAKE_PROJECT_NAME}-plug
     Plug.vala
+    Services/Settings.vala
     Widgets/Schedule.vala
     Widgets/SettingLabel.vala
     Widgets/Temperature.vala

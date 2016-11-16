@@ -23,8 +23,11 @@
 
     public class Schedule : Gtk.Grid {
 
-        Granite.Widgets.ModeButton mode_switcher;
+        Gtk.StackSwitcher mode;
         Gtk.Stack stack;
+        
+        Granite.Widgets.TimePicker daytime;
+        Granite.Widgets.TimePicker nighttime;
 
         public Schedule () {
             Object (margin: 12,
@@ -41,13 +44,6 @@
             schedule_label.get_style_context ().add_class ("h4");
             Plug.start_size_group.add_widget (schedule_label);
 
-            mode_switcher = new Granite.Widgets.ModeButton ();
-            mode_switcher.margin_top = 12;
-            mode_switcher.append_text (_("None"));
-            mode_switcher.append_text (_("Auto"));
-            mode_switcher.append_text (_("Custom"));
-            Plug.end_size_group.add_widget (mode_switcher);
-
             // mode: none
             var mode_none_label = new Gtk.Label (_("Don't turn on automatically."));
             mode_none_label.wrap = true;
@@ -63,9 +59,9 @@
             mode_custom_label.wrap = true;
             mode_custom_label.justify = Gtk.Justification.CENTER;
 
-            var daytime = new Granite.Widgets.TimePicker ();
+            daytime = new Granite.Widgets.TimePicker ();
             Plug.end_size_group.add_widget (daytime);
-            var nighttime = new Granite.Widgets.TimePicker ();
+            nighttime = new Granite.Widgets.TimePicker ();
             Plug.end_size_group.add_widget (nighttime);
 
             var mode_custom_grid = new Gtk.Grid ();
@@ -80,38 +76,50 @@
 
             stack = new Gtk.Stack ();
             stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-            stack.add_named (mode_none_label, "none");
-            stack.add_named (mode_auto_label, "auto");
-            stack.add_named (mode_custom_grid, "custom");
+            stack.add_titled (mode_none_label, "none", _("None"));
+            stack.add_titled (mode_auto_label, "auto", _("Auto"));
+            stack.add_titled (mode_custom_grid, "custom", _("Custom"));
+
+            mode = new Gtk.StackSwitcher ();
+            mode.margin_top = 12;
+            mode.halign = Gtk.Align.CENTER;
+            mode.set_stack (stack);
 
             // attach things
             attach (schedule_label, 0, 0, 1, 1);
-            // attach (new SettingLabel (_("Mode:")), 0, 1, 1, 1);
-            attach (mode_switcher, 0, 1, 1, 1);
+            attach (mode, 0, 1, 1, 1);
             attach (stack, 0, 2, 1, 1);
+
+            this.show_all ();
 
             connect_signals ();
             update ();
         }
 
         private void connect_signals () {
-            mode_switcher.mode_changed.connect ((w) => {
-                switch (mode_switcher.selected) {
-                    case 0:
-                        stack.set_visible_child_name ("none");
-                        break;
-                    case 1:
-                        stack.set_visible_child_name ("auto");
-                        break;
-                    case 2:
-                        stack.set_visible_child_name ("custom");
-                        break;
-                }
+            stack.notify["visible-child"].connect (() => {
+                settings.schedule_mode = stack.visible_child_name;
+                message (stack.visible_child_name);
+            });
+
+            daytime.time_changed.connect (() => {
+                settings.set_day (daytime.time);
+            });
+
+            nighttime.time_changed.connect (() => {
+                settings.set_night (nighttime.time);
+            });
+
+            settings.changed.connect (() => {
+                update ();
             });
         }
 
         private void update () {
-            mode_switcher.selected = 0;
+            stack.set_visible_child_name (settings.schedule_mode);
+
+            daytime.time = settings.get_day ();
+            nighttime.time = settings.get_night ();
         }
         
     }

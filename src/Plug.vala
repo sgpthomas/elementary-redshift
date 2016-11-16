@@ -21,12 +21,15 @@
 namespace ElementaryRedshift {
 
     public static Plug plug;
+    public static Services.Settings settings;
 
     public class Plug : Switchboard.Plug {
         Gtk.Box main_box;
 
         public static Gtk.SizeGroup end_size_group;
         public static Gtk.SizeGroup start_size_group;
+
+        Gtk.LinkButton reset_button;
 
         public Plug () {
             Object (category: Category.PERSONAL,
@@ -37,6 +40,7 @@ namespace ElementaryRedshift {
                     supported_settings: new Gee.TreeMap<string, string?> (null, null));
             supported_settings.set ("redshift", null);
             plug = this;
+            settings = new Services.Settings ();
         }
 
         static construct {
@@ -73,10 +77,22 @@ namespace ElementaryRedshift {
 
             main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
+            reset_button = new Gtk.LinkButton (_("Reset to Default"));
+            reset_button.margin = 12;
+            reset_button.vexpand = true;
+            reset_button.halign = Gtk.Align.END;
+            reset_button.valign = Gtk.Align.END;
+
             main_box.add (new Widgets.Schedule ());
             main_box.add (new Widgets.Temperature ());
+            main_box.add (reset_button);
 
             main_box.show_all ();
+
+            reset_button.activate_link.connect (() => {
+                settings.reset_all ();
+                return true;
+            });
         }
     }
 }

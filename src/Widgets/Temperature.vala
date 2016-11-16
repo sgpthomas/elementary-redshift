@@ -23,6 +23,9 @@
 
     public class Temperature : Gtk.Grid {
 
+        Gtk.Scale day_temp_scale;
+        Gtk.Scale night_temp_scale;
+
         public Temperature () {
             Object (margin: 12,
                     row_spacing: 12,
@@ -39,15 +42,15 @@
             Plug.start_size_group.add_widget (temperature_label);
 
             // temperature scale for day time
-            var day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
-            day_temp_scale.adjustment.value = 65;
+            day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
+            day_temp_scale.adjustment.value = settings.day_temperature / 100;
             day_temp_scale.add_mark (65, Gtk.PositionType.BOTTOM, null);
             day_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (day_temp_scale);
 
             // temperature scale for night time
-            var night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
-            night_temp_scale.adjustment.value = 35;
+            night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
+            night_temp_scale.adjustment.value = settings.night_temperature / 100;
             night_temp_scale.add_mark (35, Gtk.PositionType.BOTTOM, null);
             night_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (night_temp_scale);
@@ -66,6 +69,26 @@
 
             night_temp_scale.format_value.connect ((val) => {
                 return " %.f00 K".printf (val);
+            });
+
+            connect_signals ();
+        }
+
+        private void connect_signals () {
+            day_temp_scale.value_changed.connect (() => {
+                settings.day_temperature = ((int) day_temp_scale.get_value ()) * 100;
+            });
+
+            night_temp_scale.value_changed.connect (() => {
+                settings.night_temperature = ((int) night_temp_scale.get_value ()) * 100;
+            });
+
+            settings.notify["day-temperature"].connect (() => {
+                day_temp_scale.adjustment.value = settings.day_temperature/ 100;
+            });
+
+            settings.notify["night-temperature"].connect (() => {
+                night_temp_scale.adjustment.value = settings.night_temperature / 100;
             });
         }
     }
