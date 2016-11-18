@@ -26,6 +26,9 @@
 
         /* The main widget that is displayed in the popover */
         private Gtk.Grid? main_grid = null;
+        Wingpanel.Widgets.Switch active_toggle;
+
+        public Services.RedshiftController controller;
 
         /* Constructor */
         public Indicator () {
@@ -36,6 +39,8 @@
 
             /* Indicator should be visible at startup */
             this.visible = true;
+
+            controller = new Services.RedshiftController ();
         }
 
         /* This method is called to get the widget that is displayed in the top bar */
@@ -75,7 +80,7 @@
         private void create_grid () {
             main_grid = new Gtk.Grid ();
 
-            var active_toggle = new Wingpanel.Widgets.Switch (_("Redshift"));
+            active_toggle = new Wingpanel.Widgets.Switch (_("Redshift"));
             active_toggle.get_style_context ().add_class ("h4");
 
             var show_settings_button = new Wingpanel.Widgets.Button (_("Redshift Settings…"));
@@ -94,6 +99,10 @@
             main_grid.attach (active_toggle, 0, 0, 1, 1);
             main_grid.attach (new Wingpanel.Widgets.Separator (), 0, 1, 1, 1);
             main_grid.attach (show_settings_button, 0, 2, 1, 1);
+
+            active_toggle.switched.connect (() => {
+                controller.set_active (active_toggle.get_active ());
+            });
         }
     }
  }
