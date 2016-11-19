@@ -52,6 +52,19 @@
             night_time = "%i:%i".printf (d.get_hour (), d.get_minute ());
         }
 
+        public string get_mode_name (string mode) {
+            switch (mode) {
+                case "none":
+                    return _("None");
+                case "auto":
+                    return _("Auto");
+                case "custom":
+                    return _("Custom");
+                default:
+                    return _("None");
+            }
+        }
+
         public void reset_all () {
             this.schema.reset ("schedule-mode");
             this.schema.reset ("day-time");

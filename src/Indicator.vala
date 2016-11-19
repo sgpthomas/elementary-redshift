@@ -28,7 +28,8 @@
         private Gtk.Grid? main_grid = null;
         Wingpanel.Widgets.Switch active_toggle;
 
-        public Services.RedshiftController controller;
+        public static Services.RedshiftController controller;
+        public static Services.Settings settings;
 
         /* Constructor */
         public Indicator () {
@@ -41,6 +42,7 @@
             this.visible = true;
 
             controller = new Services.RedshiftController ();
+            settings = new Services.Settings ();
         }
 
         /* This method is called to get the widget that is displayed in the top bar */
@@ -97,8 +99,9 @@
             });
 
             main_grid.attach (active_toggle, 0, 0, 1, 1);
-            main_grid.attach (new Wingpanel.Widgets.Separator (), 0, 1, 1, 1);
-            main_grid.attach (show_settings_button, 0, 2, 1, 1);
+            main_grid.attach (new Widgets.InformationGrid (), 0, 1, 1, 1);
+            main_grid.attach (new Wingpanel.Widgets.Separator (), 0, 2, 1, 1);
+            main_grid.attach (show_settings_button, 0, 3, 1, 1);
 
             active_toggle.switched.connect (() => {
                 controller.set_active (active_toggle.get_active ());

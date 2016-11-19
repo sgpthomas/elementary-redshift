@@ -31,7 +31,6 @@
 
         public Schedule () {
             Object (margin: 12,
-                    // row_spacing: 12,
                     column_spacing: 12,
                     halign: Gtk.Align.CENTER);
         }
@@ -76,9 +75,9 @@
 
             stack = new Gtk.Stack ();
             stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-            stack.add_titled (mode_none_label, "none", _("None"));
-            stack.add_titled (mode_auto_label, "auto", _("Auto"));
-            stack.add_titled (mode_custom_grid, "custom", _("Custom"));
+            stack.add_titled (mode_none_label, "none", settings.get_mode_name ("none"));
+            stack.add_titled (mode_auto_label, "auto", settings.get_mode_name ("auto"));
+            stack.add_titled (mode_custom_grid, "custom", settings.get_mode_name ("custom"));
 
             mode = new Gtk.StackSwitcher ();
             mode.margin_top = 12;

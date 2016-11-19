@@ -35,6 +35,9 @@ target_link_libraries (${CMAKE_PROJECT_NAME}-plug ${DEPS_LIBRARIES})
 vala_precompile (WING_VALA_C ${CMAKE_PROJECT_NAME}-wing
     Indicator.vala
     Services/RedshiftController.vala
+    Services/Settings.vala
+    Widgets/InformationGrid.vala
+    Widgets/SettingLabel.vala
     ${CMAKE_CURRENT_BINARY_DIR}/config.vala
 PACKAGES
     gtk+-3.0
