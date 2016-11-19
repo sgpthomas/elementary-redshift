@@ -43,7 +43,7 @@
             period_label = new Gtk.Label (_("Unknown"));
             period_label.halign = Gtk.Align.START;
 
-            attach (new Widgets.SettingLabel (_("Mode:")), 0, 0, 1, 1);
+            attach (new Widgets.SettingLabel (_("Schedule:")), 0, 0, 1, 1);
             attach (mode_label, 1, 0, 1, 1);
             attach (new Widgets.SettingLabel (_("Temperature:")), 0, 1, 1, 1);
             attach (temperature_label, 1, 1, 1, 1);

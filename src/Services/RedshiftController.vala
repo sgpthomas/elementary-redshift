@@ -63,7 +63,7 @@
 
             // get input stream for stdout pipe
             output = new DataInputStream (process.get_stdout_pipe ());
-            Idle.add ((GLib.SourceFunc) monitor_stream);
+            Idle.add_full (Priority.LOW, (GLib.SourceFunc) monitor_stream);
 
             connect_signals ();
         }
@@ -87,7 +87,7 @@
             if (output.has_pending ()) {
                 return;
             }
-             try {
+            try {
                 var line = yield output.read_line_async ();
                 if (line != null) {
                     if (line.contains (": ")) {
