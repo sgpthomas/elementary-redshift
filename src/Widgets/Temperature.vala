@@ -43,14 +43,14 @@
 
             // temperature scale for day time
             day_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
-            day_temp_scale.adjustment.value = settings.day_temperature / 100;
+            day_temp_scale.adjustment.value = Plug.settings.day_temperature / 100;
             day_temp_scale.add_mark (65, Gtk.PositionType.BOTTOM, null);
             day_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (day_temp_scale);
 
             // temperature scale for night time
             night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);
-            night_temp_scale.adjustment.value = settings.night_temperature / 100;
+            night_temp_scale.adjustment.value = Plug.settings.night_temperature / 100;
             night_temp_scale.add_mark (35, Gtk.PositionType.BOTTOM, null);
             night_temp_scale.value_pos = Gtk.PositionType.RIGHT;
             Plug.end_size_group.add_widget (night_temp_scale);
@@ -76,19 +76,19 @@
 
         private void connect_signals () {
             day_temp_scale.value_changed.connect (() => {
-                settings.day_temperature = ((int) day_temp_scale.get_value ()) * 100;
+                Plug.settings.day_temperature = ((int) day_temp_scale.get_value ()) * 100;
             });
 
             night_temp_scale.value_changed.connect (() => {
-                settings.night_temperature = ((int) night_temp_scale.get_value ()) * 100;
+                Plug.settings.night_temperature = ((int) night_temp_scale.get_value ()) * 100;
             });
 
-            settings.notify["day-temperature"].connect (() => {
-                day_temp_scale.adjustment.value = settings.day_temperature/ 100;
+            Plug.settings.notify["day-temperature"].connect (() => {
+                day_temp_scale.adjustment.value = Plug.settings.day_temperature/ 100;
             });
 
-            settings.notify["night-temperature"].connect (() => {
-                night_temp_scale.adjustment.value = settings.night_temperature / 100;
+            Plug.settings.notify["night-temperature"].connect (() => {
+                night_temp_scale.adjustment.value = Plug.settings.night_temperature / 100;
             });
         }
     }

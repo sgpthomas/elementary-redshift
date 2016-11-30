@@ -75,9 +75,9 @@
 
             stack = new Gtk.Stack ();
             stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
-            stack.add_titled (mode_none_label, "none", settings.get_mode_name ("none"));
-            stack.add_titled (mode_auto_label, "auto", settings.get_mode_name ("auto"));
-            stack.add_titled (mode_custom_grid, "custom", settings.get_mode_name ("custom"));
+            stack.add_titled (mode_none_label, "none", Plug.settings.get_mode_name ("none"));
+            stack.add_titled (mode_auto_label, "auto", Plug.settings.get_mode_name ("auto"));
+            stack.add_titled (mode_custom_grid, "custom", Plug.settings.get_mode_name ("custom"));
 
             mode = new Gtk.StackSwitcher ();
             mode.margin_top = 12;
@@ -97,28 +97,28 @@
 
         private void connect_signals () {
             stack.notify["visible-child"].connect (() => {
-                settings.schedule_mode = stack.visible_child_name;
+                Plug.settings.schedule_mode = stack.visible_child_name;
                 message (stack.visible_child_name);
             });
 
             daytime.time_changed.connect (() => {
-                settings.set_day (daytime.time);
+                Plug.settings.set_day (daytime.time);
             });
 
             nighttime.time_changed.connect (() => {
-                settings.set_night (nighttime.time);
+                Plug.settings.set_night (nighttime.time);
             });
 
-            settings.changed.connect (() => {
+            Plug.settings.changed.connect (() => {
                 update ();
             });
         }
 
         private void update () {
-            stack.set_visible_child_name (settings.schedule_mode);
+            stack.set_visible_child_name (Plug.settings.schedule_mode);
 
-            daytime.time = settings.get_day ();
-            nighttime.time = settings.get_night ();
+            daytime.time = Plug.settings.get_day ();
+            nighttime.time = Plug.settings.get_night ();
         }
         
     }

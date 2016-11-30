@@ -22,6 +22,9 @@
 
     public class Settings : Granite.Services.Settings {
 
+        public bool active { get; set; }
+        public bool indicator { get; set; }
+
         public string schedule_mode { get; set; }
 
         public string day_time { get; set; }

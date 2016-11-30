@@ -21,15 +21,15 @@
 namespace ElementaryRedshift {
 
     public static Plug plug;
-    public static Services.Settings settings;
 
     public class Plug : Switchboard.Plug {
-        Gtk.Box main_box;
+        public static Services.Settings settings;
 
         public static Gtk.SizeGroup end_size_group;
         public static Gtk.SizeGroup start_size_group;
 
         Gtk.LinkButton reset_button;
+        Gtk.Box main_box;
 
         public Plug () {
             Object (category: Category.PERSONAL,
@@ -83,6 +83,7 @@ namespace ElementaryRedshift {
             reset_button.halign = Gtk.Align.END;
             reset_button.valign = Gtk.Align.END;
 
+            main_box.add (new Widgets.General ());
             main_box.add (new Widgets.Schedule ());
             main_box.add (new Widgets.Temperature ());
             main_box.add (reset_button);

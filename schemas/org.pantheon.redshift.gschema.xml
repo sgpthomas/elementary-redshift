@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
     <schema path="/org/pantheon/redshift/" id="org.pantheon.redshift" gettext-domain="elementary-redshift">
+
+        <key name="active" type="b">
+            <default>true</default>
+            <summary>Redshift Active</summary>
+            <description>True if Redshift is active.</description>
+        </key>
+
+        <key name="indicator" type="b">
+            <default>true</default>
+            <summary>Indicator</summary>
+            <description>True means the indicator is shown.</description>
+        </key>
+
         <key name="schedule-mode" type="s">
             <default>'auto'</default>
             <summary>Schedule Mode</summary>
             <description>'none': No Schedule, 'auto': Use location for schedule, 'custom': Use day-time/night-time for schedule.</description>
         </key>
+
         <key name="day-time" type="s">
             <default>'07:00'</default>
             <summary>Time that day starts</summary>
             <description>Specifies the time that the day mode starts. From 00-23h:00-59m.</description>
         </key>
+
         <key name="night-time" type="s">
             <default>'18:00'</default>
             <summary>Time that day starts</summary>
             <description>Specifies the time that the day mode starts. From 00-23h:00-59m.</description>
         </key>
+
         <key name="day-temperature" type="i">
             <default>6500</default>
             <summary>Temperature of the screen in night mode.</summary>
             <description>Min 3000, Max 7500, No change 6500</description>
         </key>
+
         <key name="night-temperature" type="i">
             <default>3500</default>
             <summary>Temperature of the screen in night mode.</summary>

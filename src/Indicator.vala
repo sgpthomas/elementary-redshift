@@ -27,6 +27,7 @@
         /* The main widget that is displayed in the popover */
         private Gtk.Grid? main_grid = null;
         Wingpanel.Widgets.Switch active_toggle;
+        Gtk.Revealer info_revealer;
 
         public static Services.RedshiftController controller;
         public static Services.Settings settings;
@@ -38,11 +39,11 @@
                     display_name : _(Build.INDICATOR_TITLE), /* Localised name */
                     description: _(Build.INDICATOR_DESCRIPTION)); /* Short description */
 
-            /* Indicator should be visible at startup */
-            this.visible = true;
-
-            controller = new Services.RedshiftController ();
             settings = new Services.Settings ();
+            controller = new Services.RedshiftController ();
+
+            /* Indicator should be visible at startup */
+            this.visible = Indicator.settings.indicator;
         }
 
         /* This method is called to get the widget that is displayed in the top bar */
@@ -85,6 +86,10 @@
             active_toggle = new Wingpanel.Widgets.Switch (_("Redshift"));
             active_toggle.get_style_context ().add_class ("h4");
 
+            info_revealer = new Gtk.Revealer ();
+            info_revealer.add (new Widgets.InformationGrid ());
+            info_revealer.set_reveal_child (true);
+
             var show_settings_button = new Wingpanel.Widgets.Button (_("Redshift Settings…"));
             show_settings_button.clicked.connect (() => {
                 var list = new List<string> ();
@@ -99,13 +104,29 @@
             });
 
             main_grid.attach (active_toggle, 0, 0, 1, 1);
-            main_grid.attach (new Widgets.InformationGrid (), 0, 1, 1, 1);
+            main_grid.attach (info_revealer, 0, 1, 1, 1);
             main_grid.attach (new Wingpanel.Widgets.Separator (), 0, 2, 1, 1);
             main_grid.attach (show_settings_button, 0, 3, 1, 1);
 
+            Indicator.settings.notify["active"].connect (() => {
+                active_toggle.set_active (Indicator.settings.active);
+            });
+
+            // connect to indicator settings to decide when to show indicator
+            Indicator.settings.notify["indicator"].connect (() => {
+                this.visible = Indicator.settings.indicator;
+            });
+
             active_toggle.switched.connect (() => {
                 controller.set_active (active_toggle.get_active ());
+                info_revealer.set_reveal_child (active_toggle.get_active ());
+                Indicator.settings.active = active_toggle.get_active ();
             });
+
+            // update active toggle state
+            active_toggle.set_active (Indicator.settings.active);
+            controller.set_active (active_toggle.get_active ());
+            info_revealer.set_reveal_child (active_toggle.get_active ());
         }
     }
  }

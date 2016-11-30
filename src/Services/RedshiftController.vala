@@ -35,16 +35,44 @@
         Subprocess process;
         Pid child_pid;
 
-        DataInputStream output;
+        DataInputStream stdout_pipe;
+        uint? monitor_id;
 
         public RedshiftController () {
 
-            string[] spawn_args = {"/usr/bin/redshift", "-v"};
+            spawn_child ();
+
+            connect_signals ();
+
+            // install signal handler
+            Unix.signal_add (ProcessSignal.INT, (SourceFunc) signal_handler);
+        }
+
+        private void spawn_child () {
+            // kill old processes if any exist
+            if (process != null) {
+                terminate_child ();
+            }
+
+            // remove any old idle functions
+            if (monitor_id != null) {
+                Source.remove (monitor_id);
+            }
+
+            // don't launch a process if mode is none or custom
+            if (Indicator.settings.schedule_mode != "auto") {
+                return;
+            }
+
+            string[] spawn_args = {"redshift", "-v"};
             string[] spawn_env = Environ.get ();
 
+            // set temperature range
+            spawn_args += "-t %i:%i".printf (Indicator.settings.day_temperature, Indicator.settings.night_temperature);
+
             try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
-                launcher.set_cwd ("/");
+                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE);
+                launcher.set_cwd ("/usr/bin/");
                 launcher.set_environ (spawn_env);
 
                 process = launcher.spawnv (spawn_args);
@@ -62,10 +90,17 @@
             });
 
             // get input stream for stdout pipe
-            output = new DataInputStream (process.get_stdout_pipe ());
-            Idle.add_full (Priority.LOW, (GLib.SourceFunc) monitor_stream);
+            stdout_pipe = new DataInputStream (process.get_stdout_pipe ());
+            monitor_id = Idle.add_full (Priority.LOW, (GLib.SourceFunc) monitor_stream);
+        }
 
-            connect_signals ();
+        public void terminate_child () {
+            process.send_signal (ProcessSignal.INT);
+        }
+
+        public bool signal_handler () {
+            terminate_child ();
+            return false;
         }
 
         public void set_active (bool b) {
@@ -84,11 +119,11 @@
         }
 
         private async void read_buffer_async () {
-            if (output.has_pending ()) {
+            if (stdout_pipe.has_pending ()) {
                 return;
             }
             try {
-                var line = yield output.read_line_async ();
+                var line = yield stdout_pipe.read_line_async ();
                 if (line != null) {
                     if (line.contains (": ")) {
                         update_property (line);
@@ -139,21 +174,21 @@
         }
 
         private void connect_signals () {
-            active_changed.connect (() => {
-                message ("active: %s", active.to_string ());
-            });
+            // active_changed.connect (() => {
+            //     message ("active: %s", active.to_string ());
+            // });
 
-            temperature_changed.connect (() => {
-                message ("t: %i", temperature);
-            });
+            // temperature_changed.connect (() => {
+            //     message ("t: %i", temperature);
+            // });
 
-            period_changed.connect (() => {
-                message ("period: %s", period);
-            });
+            // period_changed.connect (() => {
+            //     message ("period: %s", period);
+            // });
 
-            location_changed.connect (() => {
-                message ("location: %f %f", location[0], location[1]);
-            });
+            // location_changed.connect (() => {
+            //     message ("location: %f %f", location[0], location[1]);
+            // });  
         }
     }
  }
