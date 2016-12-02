@@ -100,6 +100,7 @@
 
         public bool signal_handler () {
             terminate_child ();
+            Process.exit (0);
             return false;
         }
 
