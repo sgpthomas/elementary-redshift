@@ -33,6 +33,9 @@
         public int day_temperature { get; set; }
         public int night_temperature { get; set; }
 
+		public int temperature { get; set; }
+		public string period { get; set; }
+
         public Settings () {
             base ("org.pantheon.redshift");
         }
@@ -74,6 +77,8 @@
             this.schema.reset ("night-time");
             this.schema.reset ("day-temperature");
             this.schema.reset ("night-temperature");
+			this.schema.reset ("temperature");
+			this.schema.reset ("period");
         }
     }
  }

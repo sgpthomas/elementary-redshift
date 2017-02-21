@@ -44,5 +44,17 @@
             <description>Min 3000, Max 7500, No change 5500</description>
         </key>
 
+        <key name="temperature" type="i">
+            <default>5500</default>
+            <summary>Current Temperature</summary>
+            <description>Keeps track of the current temperature.</description>
+        </key>
+
+        <key name="period" type="s">
+            <default>'Unknown'</default>
+            <summary>Current period</summary>
+            <description>Keeps track of the current period.</description>
+        </key>
+
     </schema>
 </schemalist>

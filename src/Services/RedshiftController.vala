@@ -22,25 +22,31 @@
 
     public class RedshiftController {
 
-        public bool active = false;
-        public int temperature = -1;
-        public string period = "Unknown";
-        public double[] location = { 0.0, 0.0 };
-
         public signal void active_changed ();
         public signal void temperature_changed ();
         public signal void period_changed ();
         public signal void location_changed ();
 
-        Subprocess process;
-        Pid child_pid;
+		Child child;
+		Thread<bool> info_thread;
 
-        DataInputStream stdout_pipe;
-        uint? monitor_id;
+		Subprocess process;
+		Pid child_pid;
 
         public RedshiftController () {
 
-            spawn_child ();
+			if (info_thread != null) {
+				message ("A thread already exists. Kill old one before making a new one.");
+				child.running = false;
+				info_thread.join ();
+			}
+
+			child = new Child ();
+			try {
+				info_thread = new Thread<bool>.try ("Elementary Redshift Info", child.run);
+			} catch (Error e) {
+				error ("Error: %s", e.message);
+			}
 
             connect_signals ();
 
@@ -48,148 +54,84 @@
             Unix.signal_add (ProcessSignal.INT, (SourceFunc) signal_handler);
         }
 
-        private void spawn_child () {
-            // kill old processes if any exist
-            if (process != null) {
-                terminate_child ();
-            }
+		private void execute (string[] options) {
 
-            // remove any old idle functions
-            if (monitor_id != null) {
-                Source.remove (monitor_id);
-            }
+			// kill old processes if any exist
+			if (process != null) {
+				process.send_signal (ProcessSignal.INT);
+			}
 
-            // don't launch a process if mode is none or custom
-            if (Indicator.settings.schedule_mode != "auto") {
-                return;
-            }
+			string [] spawn_args = {"redshift"};
+			foreach (string o in options) {
+				spawn_args += o;
+			}
 
-            string[] spawn_args = {"redshift", "-v"};
-            string[] spawn_env = Environ.get ();
+			try {
+				var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_SILENCE);
 
-            // set temperature range
-            spawn_args += "-t %i:%i".printf (Indicator.settings.day_temperature, Indicator.settings.night_temperature);
+				launcher.set_cwd ("/usr/bin/");
+				launcher.set_environ (Environ.get ());
 
-            try {
-                var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE);
-                launcher.set_cwd ("/usr/bin/");
-                launcher.set_environ (spawn_env);
+				process = launcher.spawnv (spawn_args);
 
-                process = launcher.spawnv (spawn_args);
-
-                child_pid = int.parse (process.get_identifier ());
-                
-            } catch (Error e) {
-                error ("Error: %s", e.message);
-            }
-            
-            // watch for process exiting
-            ChildWatch.add (child_pid, (pid, status) => {
-                message ("Redshift exited with status %i", status);
-                Process.close_pid (pid);
-            });
-
-            // get input stream for stdout pipe
-            stdout_pipe = new DataInputStream (process.get_stdout_pipe ());
-            monitor_id = Idle.add_full (Priority.LOW, (GLib.SourceFunc) monitor_stream);
-        }
-
-        public void terminate_child () {
-            process.send_signal (ProcessSignal.INT);
-        }
+				child_pid = int.parse (process.get_identifier ());
+			} catch (Error e) {
+				error ("Error: %s", e.message);
+			}
+		}
 
         public bool signal_handler () {
-            terminate_child ();
+			child.terminate ();
+			child.running = false;
+			info_thread.join ();
             Process.exit (0);
-            return false;
         }
+
+		public bool get_active () {
+			return Indicator.settings.active;
+		}
 
         public void set_active (bool b) {
-            if (b && !active) {
-                process.send_signal (ProcessSignal.USR1);
-            } else if (!b && active) {
-                process.send_signal (ProcessSignal.USR1);
-            }
+			Indicator.settings.active = b;
         }
 
-        private bool monitor_stream () {
+		public int get_temperature () {
+			return Indicator.settings.temperature;
+		}
 
-            read_buffer_async.begin ();
+		public void set_temperature (int t) {
+			execute ({"-O", t.to_string ()});
+		}
 
-            return Source.CONTINUE;
-        }
-
-        private async void read_buffer_async () {
-            if (stdout_pipe.has_pending ()) {
-                return;
-            }
-            try {
-                var line = yield stdout_pipe.read_line_async ();
-                if (line != null) {
-                    if (line.contains (": ")) {
-                        update_property (line);
-                    }
-                }
-
-            } catch (IOError e) {
-                error ("IOError: %s", e.message);
-            }
-        }
-
-        private void update_property (string ret) {
-            var parts = ret.split (": ");
-
-            switch (parts[0]) {
-                case "Status":
-                    active = (parts[1].strip () == "Enabled");
-                    active_changed ();
-                    break;
-                case "Color temperature":
-                    temperature = int.parse (parts[1].replace ("K", ""));
-                    temperature_changed ();
-                    break;
-                case "Period":
-                    period = parts[1];
-                    period_changed ();
-                    break;
-                case "Location":
-                    var coords = parts[1].split (", ");
-
-                    var a = coords[0].split (" ");
-                    if (a[1] == "N" || a[1] == "E") {
-                        location[0] = double.parse (a[0]);
-                    } else {
-                        location[0] = 1 * double.parse (a[0]);
-                    }
-
-                    a = coords[1].split (" ");
-                    if (a[1] == "N" || a[1] == "E") {
-                        location[1] = double.parse (a[0]);
-                    } else {
-                        location[1] = -1 * double.parse (a[0]);
-                    }
-
-                    location_changed ();
-                    break;
-            }
-        }
+		public string get_period () {
+			return Indicator.settings.period;
+		}
 
         private void connect_signals () {
-            // active_changed.connect (() => {
-            //     message ("active: %s", active.to_string ());
-            // });
+			Indicator.settings.notify["active"].connect (() => {
+					active_changed ();
+				});
 
-            // temperature_changed.connect (() => {
-            //     message ("t: %i", temperature);
-            // });
+			Indicator.settings.notify["temperature"].connect (() => {
+					temperature_changed ();
+				});
 
-            // period_changed.connect (() => {
-            //     message ("period: %s", period);
-            // });
+			Indicator.settings.notify["period"].connect (() => {
+					period_changed ();
+				});
 
-            // location_changed.connect (() => {
-            //     message ("location: %f %f", location[0], location[1]);
-            // });  
+			active_changed.connect (() => {
+					bool active = Indicator.settings.active;
+					if (active) {
+						set_temperature (Indicator.settings.temperature);
+					} else {
+						execute ({"-x"});
+					}
+				});
+
+			temperature_changed.connect (() => {
+					set_temperature (Indicator.settings.temperature);
+				});
         }
     }
  }
