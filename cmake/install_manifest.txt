@@ -1,0 +1,4 @@
+/usr/lib/x86_64-linux-gnu/switchboard/personal/elementary-redshift/libelementary-redshift-plug.so
+/usr/lib/x86_64-linux-gnu/wingpanel/elementary-redshift/libelementary-redshift-wing.so
+/usr/bin/elementary-redshift-daemon
+/usr/share/glib-2.0/schemas/org.pantheon.redshift.gschema.xml

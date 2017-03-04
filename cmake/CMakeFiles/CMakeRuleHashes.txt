@@ -1,0 +1,9 @@
+# Hashes of file build rules.
+4f932155cff2513c75057f4a91027a4f CMakeFiles/dist
+0ba0fa8d71da2b1ac50377d753575b2f CMakeFiles/uninstall
+365dded7db2a46d1009038fedd9fa755 src/Daemon/RedshiftDaemon.c
+365dded7db2a46d1009038fedd9fa755 src/Indicator.c
+365dded7db2a46d1009038fedd9fa755 src/Plug.c
+73d2e8cfc9452025642fc9d7bff53c43 src/elementary-redshift-daemon_valac.stamp
+f067aaa7ff777dbc5e1650592db228cc src/elementary-redshift-plug_valac.stamp
+83c675863e83382b3b7142d68469480e src/elementary-redshift-wing_valac.stamp

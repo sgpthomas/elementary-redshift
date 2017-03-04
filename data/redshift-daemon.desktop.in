@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=@CMAKE_PROJECT_NAME@-daemon
+Exec=@CMAKE_PROJECT_NAME@-daemon
+X-GNOME-Autostart-enabled=true

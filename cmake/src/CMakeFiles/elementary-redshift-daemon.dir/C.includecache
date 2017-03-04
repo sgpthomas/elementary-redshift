@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/samthomas/Development/elementary-redshift/cmake/src/Daemon/RedshiftDaemon.c
+glib.h
+-
+glib-object.h
+-
+gio/gio.h
+-
+stdlib.h
+-
+string.h
+-
+
