@@ -37,6 +37,12 @@ namespace ElementaryRedshift.Services {
 		public bool run () {
 			while (running) {
 				spawn_child ();
+				if (Indicator.settings.schedule_mode == "custom") {
+					if (transitioning ()) {
+						float step = (Indicator.settings.day_temperature - Indicator.settings.night_temperature) / 30;
+						Indicator.settings.temperature += step;
+					}
+				}
 				Thread.usleep (1000000); // one second
 			}
 			return true;
@@ -116,5 +122,9 @@ namespace ElementaryRedshift.Services {
                     break;
             }
         }
+
+		private void transitioning () {
+
+		}
 	}
 }
