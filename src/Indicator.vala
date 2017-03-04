@@ -29,7 +29,6 @@
         Wingpanel.Widgets.Switch active_toggle;
         Gtk.Revealer info_revealer;
 
-        // public static Services.RedshiftController controller;
         public static Services.Settings settings;
 
         /* Constructor */
@@ -40,7 +39,6 @@
                     description: _(Build.INDICATOR_DESCRIPTION)); /* Short description */
 
             settings = new Services.Settings ();
-            // controller = new Services.RedshiftController ();
 
             /* Indicator should be visible at startup */
             this.visible = Indicator.settings.indicator;
@@ -118,14 +116,12 @@
             });
 
             active_toggle.switched.connect (() => {
-                // controller.set_active (active_toggle.get_active ());
                 info_revealer.set_reveal_child (active_toggle.get_active ());
                 Indicator.settings.active = active_toggle.get_active ();
             });
 
             // update active toggle state
             active_toggle.set_active (Indicator.settings.active);
-            // controller.set_active (active_toggle.get_active ());
             info_revealer.set_reveal_child (active_toggle.get_active ());
         }
     }
