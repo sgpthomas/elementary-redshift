@@ -112,10 +112,7 @@ namespace ElementaryRedshift.Daemon {
             switch (parts[0]) {
                 case "Color temperature":
 					if (settings.schedule_mode == "auto" && settings.active) {
-						var new_temp = int.parse (parts[1].replace ("K", ""));
-						if (settings.temperature != new_temp) {
-							settings.temperature = new_temp;
-						}
+						settings.temperature = int.parse (parts[1].replace ("K", ""));
 					}
                     break;
                 case "Period":
