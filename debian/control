@@ -1,27 +1,20 @@
-Source: switchboard-plug-template
+Source: elementary-redshift
 Section: x11
 Priority: optional
-Maintainer: Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>
-Build-Depends: cmake,
-               debhelper (>= 9),
-               libswitchboard-2.0-dev
-Standards-Version: 3.9.2
-Homepage: https://launchpad.net/pantheon-plugs
+Maintainer: Samuel Thomas <sgpthomas@gmail.com>
+Build-Depends: debhelper (>= 9),
+               libswitchboard-2.0-dev,
+               libwingpanel-2.0-dev,
+               valac-0.28 | valac (>= 0.28),
+               libgranite-dev (>= 0.3.0),
+               libgtk-3-dev,
+               libgee-0.8-dev,
+               libglib2.0-dev,
+               redshift
+Standards-Version: 3.9.5
 
-Package: switchboard-plug-template
+Package: elementary-redshift
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Enhances: switchboard
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
-
-Package: switchboard-plug-template-dbg
-Architecture: any
-Section: debug
-Priority: extra
-Depends: switchboard-plug-template (= ${binary:Version}), ${misc:Depends}
-Enhances: switchboard-plug-template
-Description: <insert up to 60 chars description> (debugging symbols)
- <insert long description, indented with spaces>
- .
- This package contains debugging symbols for switchboard-plug-template.
+Description: Wrapper for Redshift <http://jonls.dk/redshift/> that adds a Wingpanel Indicator and a Plug

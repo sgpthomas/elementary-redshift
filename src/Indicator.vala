@@ -22,7 +22,7 @@
 
     public class Indicator : Wingpanel.Indicator {
         /* Our display widget, a composited icon */
-        private Wingpanel.Widgets.OverlayIcon? display_widget = null;
+        private Gtk.Image? display_widget = null;
 
         /* The main widget that is displayed in the popover */
         private Gtk.Grid? main_grid = null;
@@ -49,7 +49,9 @@
             /* Check if the display widget is already created */
             if (display_widget == null) {
                 /* Create a new composited icon */
-                display_widget = new Wingpanel.Widgets.OverlayIcon ("weather-clear-night-symbolic");
+				display_widget = new Gtk.Image ();
+				display_widget.pixel_size = 24;
+				update_icon ();
             }
 
             /* Return our display widget */
@@ -115,6 +117,10 @@
                 this.visible = Indicator.settings.indicator;
             });
 
+			Indicator.settings.notify["period"].connect (() => {
+					update_icon ();
+				});
+
             active_toggle.switched.connect (() => {
                 info_revealer.set_reveal_child (active_toggle.get_active ());
                 Indicator.settings.active = active_toggle.get_active ();
@@ -124,6 +130,18 @@
             active_toggle.set_active (Indicator.settings.active);
             info_revealer.set_reveal_child (active_toggle.get_active ());
         }
+
+		private void update_icon () {
+			if ("Day" in Indicator.settings.period) {
+				message ("day");
+				// display_widget = new Wingpanel.Widgets.OverlayIcon ("brightness-display-symbolic");
+				display_widget.icon_name = "brightness-display-symbolic";
+			} else {
+				message ("night");
+                // display_widget = new Wingpanel.Widgets.OverlayIcon ("weather-clear-night-symbolic");
+				display_widget.icon_name = "weather-clear-night-symbolic";
+			}
+		}
     }
  }
 

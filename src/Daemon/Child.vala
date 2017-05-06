@@ -134,7 +134,7 @@ namespace ElementaryRedshift.Daemon {
 								settings.period = _("Transition(%.2f% Day)".printf (progress));
 							} else {
 								settings.temperature = settings.day_temperature;
-								settings.period = _("Day");
+								settings.period = _("Daytime");
 							}
 						} else { // night
 							var diff = settings.day_time - now;
@@ -144,7 +144,7 @@ namespace ElementaryRedshift.Daemon {
 								settings.period = _("Transition(%.2f% Night)".printf (progress));
 							} else {
 								settings.temperature = settings.night_temperature;
-								settings.period = _("Night");
+								settings.period = _("Nighttime");
 							}
 						}
 					}
