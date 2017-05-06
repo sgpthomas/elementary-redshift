@@ -46,7 +46,7 @@
             day_temp_scale.adjustment.value = Plug.settings.day_temperature / 100;
             day_temp_scale.add_mark (65, Gtk.PositionType.BOTTOM, null);
             day_temp_scale.value_pos = Gtk.PositionType.RIGHT;
-            Plug.end_size_group.add_widget (day_temp_scale);
+            // Plug.end_size_group.add_widget (day_temp_scale);
 
             // temperature scale for night time
             night_temp_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);

@@ -20,14 +20,14 @@
             <description>'none': No Schedule, 'auto': Use location for schedule, 'custom': Use day-time/night-time for schedule.</description>
         </key>
 
-        <key name="day-time" type="s">
-            <default>'07:00'</default>
+        <key name="day-time" type="i">
+            <default>700</default>
             <summary>Time that day starts</summary>
             <description>Specifies the time that the day mode starts. From 00-23h:00-59m.</description>
         </key>
 
-        <key name="night-time" type="s">
-            <default>'18:00'</default>
+        <key name="night-time" type="i">
+            <default>1800</default>
             <summary>Time that day starts</summary>
             <description>Specifies the time that the day mode starts. From 00-23h:00-59m.</description>
         </key>

@@ -27,8 +27,8 @@
 
         public string schedule_mode { get; set; }
 
-        public string day_time { get; set; }
-        public string night_time { get; set; }
+        public int day_time { get; set; }
+        public int night_time { get; set; }
 
         public int day_temperature { get; set; }
         public int night_temperature { get; set; }
@@ -41,21 +41,23 @@
         }
 
         public DateTime get_day () {
-            var parts = day_time.split (":");
-            return new DateTime.local (2016, 11, 15, int.parse (parts[0]), int.parse (parts[1]), 0);
+			var min = day_time % 100;
+			var hour = (day_time - min) / 100;
+            return new DateTime.local (2016, 11, 15, hour, min, 0);
         }
 
         public void set_day (DateTime d) {
-            day_time = "%i:%i".printf (d.get_hour (), d.get_minute ());
+            day_time = (100 * d.get_hour ()) + d.get_minute ();
         }
 
         public DateTime get_night () {
-            var parts = night_time.split (":");
-            return new DateTime.local (2016, 11, 15, int.parse (parts[0]), int.parse (parts[1]), 0);
+			var min = night_time % 100;
+			var hour = (night_time - min) / 100;
+            return new DateTime.local (2016, 11, 15, hour, min, 0);
         }
 
         public void set_night (DateTime d) {
-            night_time = "%i:%i".printf (d.get_hour (), d.get_minute ());
+            night_time = (100 * d.get_hour ()) + d.get_minute ();
         }
 
         public string get_mode_name (string mode) {

@@ -45,11 +45,11 @@
             mode_label.halign = Gtk.Align.START;
 
 			temperature_setting_label = new Widgets.SettingLabel (_("Temperature:"));
-            temperature_label = new Gtk.Label (_("Unknown"));
+            temperature_label = new Gtk.Label (Indicator.settings.temperature.to_string ());
             temperature_label.halign = Gtk.Align.START;
 
 			period_setting_label = new Widgets.SettingLabel (_("Period:"));
-            period_label = new Gtk.Label (_("Unknown"));
+            period_label = new Gtk.Label (Indicator.settings.period);
             period_label.halign = Gtk.Align.START;
 
 			temperature_scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 30, 70, 1);

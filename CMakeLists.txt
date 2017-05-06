@@ -17,7 +17,7 @@ set (INDICATORTITLE "Elementary Redshift")
 # The description of what your Indicator is
 set (INDICATORDESCRIPTION "Adjusts the color temperature of your screen according to your surroundings")
 
-# Set the Name of the plug, should be an executable command, lowercase, no spaces 
+# Set the Name of the plug, should be an executable command, lowercase, no spaces
 project (elementary-redshift)
 
 set (PREFIX ${CMAKE_INSTALL_PREFIX})
@@ -41,8 +41,6 @@ set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
 set (DAEMON_DATADIR ${DATADIR}/${CMAKE_PROJECT_NAME}-daemon)
 
 set (GETTEXT_PACKAGE "${CMAKE_PROJECT_NAME}")
-
-list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Configure file
 configure_file (${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_BINARY_DIR}/src/config.vala)

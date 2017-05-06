@@ -30,7 +30,6 @@ namespace ElementaryRedshift.Widgets {
         construct {
             halign = Gtk.Align.END;
             margin_start = 12;
-            // Plug.end_size_group.add_widget (this);
         }
     }    
 }

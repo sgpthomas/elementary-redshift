@@ -106,17 +106,51 @@ namespace ElementaryRedshift.Daemon {
             }
         }
 
+		private int get_time_int (DateTime dt) {
+			return (dt.get_hour () * 100) + dt.get_minute ();
+		}
+
         private void update_property (string ret) {
             var parts = ret.split (": ");
 
+			if (!settings.active) {
+				return;
+			}
+
             switch (parts[0]) {
                 case "Color temperature":
-					if (settings.schedule_mode == "auto" && settings.active) {
+					if (settings.schedule_mode == "auto") {
 						settings.temperature = int.parse (parts[1].replace ("K", ""));
+					} else if (settings.schedule_mode == "custom") {
+						var now = get_time_int (new DateTime.now_local ());
+						var factor = (settings.day_temperature - settings.night_temperature) / (60 * 15);
+
+						// day
+						if (now > settings.day_time && now < settings.night_time) {
+							var diff = settings.night_time - now;
+							if (diff < 100 && diff >= 0) {
+								settings.temperature = settings.night_temperature + (factor * (diff - 40));
+								var progress = (((double)(diff) - 60.0) / 60.0) * 100.0;
+								settings.period = _("Transition(%.2f% Day)".printf (progress));
+							} else {
+								settings.temperature = settings.day_temperature;
+								settings.period = _("Day");
+							}
+						} else { // night
+							var diff = settings.day_time - now;
+							if (diff < 100 && diff >= 0) {
+								settings.temperature = settings.day_temperature - (factor * (diff - 40));
+								var progress = (((double)(diff) - 60.0) / 60.0) * 100.0;
+								settings.period = _("Transition(%.2f% Night)".printf (progress));
+							} else {
+								settings.temperature = settings.night_temperature;
+								settings.period = _("Night");
+							}
+						}
 					}
                     break;
                 case "Period":
-					if (settings.schedule_mode == "auto" && settings.active) {
+					if (settings.schedule_mode == "auto") {
 						settings.period = parts[1];
 					}
                     break;

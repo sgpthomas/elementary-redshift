@@ -81,6 +81,7 @@
 
             mode = new Gtk.StackSwitcher ();
             mode.margin_top = 12;
+			mode.margin_bottom = 12;
             mode.halign = Gtk.Align.CENTER;
             mode.set_stack (stack);
 

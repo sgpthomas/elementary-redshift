@@ -26,7 +26,7 @@ namespace ElementaryRedshift.Daemon {
 		Child child;
 
 		Subprocess process;
-		Pid child_pid;
+		// Pid child_pid;
 
 		public RedshiftController () {
 			Object (application_id: "org.pantheon.redshift.daemon", flags: ApplicationFlags.FLAGS_NONE);
@@ -91,7 +91,7 @@ namespace ElementaryRedshift.Daemon {
 
 				process = launcher.spawnv (spawn_args);
 
-				child_pid = int.parse (process.get_identifier ());
+				// child_pid = int.parse (process.get_identifier ());
 			} catch (Error e) {
 				error ("Error: %s", e.message);
 			}
