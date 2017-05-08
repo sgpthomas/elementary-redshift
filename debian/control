@@ -2,7 +2,8 @@ Source: com.github.sgpthomas.elementary-redshift
 Section: x11
 Priority: optional
 Maintainer: Samuel Thomas <sgpthomas@gmail.com>
-Build-Depends: debhelper (>= 9),
+Build-Depends: cmake,
+               debhelper (>= 9),
                libswitchboard-2.0-dev,
                libwingpanel-2.0-dev,
                valac-0.28 | valac (>= 0.28),
