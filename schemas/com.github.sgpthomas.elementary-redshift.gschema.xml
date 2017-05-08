@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-    <schema path="/org/pantheon/redshift/" id="org.pantheon.redshift" gettext-domain="elementary-redshift">
+    <schema path="/com/github/sgpthomas/elementary-redshift/" id="com.github.sgpthomas.elementary-redshift" gettext-domain="elementary-redshift">
 
         <key name="active" type="b">
             <default>true</default>
@@ -55,6 +55,5 @@
             <summary>Current period</summary>
             <description>Keeps track of the current period.</description>
         </key>
-
     </schema>
 </schemalist>

@@ -1,2 +1,2 @@
 include(GSettings)
-add_schema("org.pantheon.redshift.gschema.xml")
+add_schema("com.github.sgpthomas.elementary-redshift.gschema.xml")

@@ -37,7 +37,7 @@
 		public string period { get; set; }
 
         public Settings () {
-            base ("org.pantheon.redshift");
+            base ("com.github.sgpthomas.elementary-redshift");
         }
 
         public DateTime get_day () {

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Sam Thomas <sgpthomas@gmail.com> -->
+<component type="desktop-application">
+  <id>com.github.sgpthomas.sgpthomas.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-3</project_license>
+  <name>Elementary Redshift</name>
+  <summary>A wrapper for Redshift that adds a Wingpanel Indicator and a Switchboard Plug.</summary>
+
+  <description>
+    <p>
+        Adds a front-end for Redshift designed for elementary OS. Removes Blue-Light from your screen at night to make using your computer easier on your eyes.
+    </p>
+  </description>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Indicator</caption>
+      <image>https://raw.githubusercontent.com/sgpthomas/elementary-redshift/master/data/screenshots/indicator.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Plug</caption>
+      <image>https://raw.githubusercontent.com/sgpthomas/elementary-redshift/master/data/screenshots/plug.png</image>
+    </screenshot>
+  </screenshots>
+
+  <developer_name>Sam Thomas</developer_name>
+  <url type="homepage">https://github.com/sgpthomas/elementary-redshift</url>
+  <url type="bugtracker">https://github.com/sgpthomas/elementary-redshift/issues</url>
+  <url type="help">https://github.com/sgpthomas/elementary-redshift/issues</url>
+  <update_contact>sgpthomas@gmail.com</update_contact>
+
+  <custom>
+    <value key="x-appcenter-color-primary">#f46841</value>
+    <value key="x-appcenter-color-primary-text">#fff</value>
+  </custom>
+
+  <provides>
+    <binary>elementary-redshift-daemon</binary>
+  </provides>
+
+  <releases>
+  </releases>
+</component>
