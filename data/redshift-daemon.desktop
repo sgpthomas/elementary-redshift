@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=elementary-redshift-daemon
-Exec=elementary-redshift-daemon
-X-GNOME-Autostart-enabled=true

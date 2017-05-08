@@ -29,7 +29,7 @@ namespace ElementaryRedshift.Daemon {
 		// Pid child_pid;
 
 		public RedshiftController () {
-			Object (application_id: "org.pantheon.redshift.daemon", flags: ApplicationFlags.FLAGS_NONE);
+			Object (application_id: "com.github.sgpthomas.elementary-redshift.daemon", flags: ApplicationFlags.FLAGS_NONE);
 			set_inactivity_timeout (1000);
 		}
 

@@ -18,7 +18,7 @@ set (INDICATORTITLE "Elementary Redshift")
 set (INDICATORDESCRIPTION "Adjusts the color temperature of your screen according to your surroundings")
 
 # Set the Name of the plug, should be an executable command, lowercase, no spaces
-project (elementary-redshift)
+project (com.github.sgpthomas.elementary-redshift)
 
 set (PREFIX ${CMAKE_INSTALL_PREFIX})
 set (PKG_DATADIR ${DATADIR}/${CMAKE_PROJECT_NAME})
@@ -44,7 +44,7 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Configure file
 configure_file (${CMAKE_SOURCE_DIR}/config.vala.cmake ${CMAKE_BINARY_DIR}/src/config.vala)
-configure_file (${CMAKE_SOURCE_DIR}/data/redshift-daemon.desktop.in ${CMAKE_SOURCE_DIR}/data/redshift-daemon.desktop)
+configure_file (${CMAKE_SOURCE_DIR}/data/com.github.sgpthomas.elementary-redshift-daemon.desktop.in ${CMAKE_SOURCE_DIR}/data/com.github.sgpthomas.elementary-redshift-daemon.desktop)
 
 # some other necessary things
 add_definitions (-DGETTEXT_PACKAGE=\"${GETTEXT_PACKAGE}\")

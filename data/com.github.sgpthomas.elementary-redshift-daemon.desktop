@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=com.github.sgpthomas.elementary-redshift-daemon
+Exec=com.github.sgpthomas.elementary-redshift-daemon
+X-GNOME-Autostart-enabled=true
