@@ -1,4 +1,4 @@
-Source: elementary-redshift
+Source: com.github.sgpthomas.elementary-redshift
 Section: x11
 Priority: optional
 Maintainer: Samuel Thomas <sgpthomas@gmail.com>
@@ -13,7 +13,7 @@ Build-Depends: debhelper (>= 9),
                redshift
 Standards-Version: 3.9.5
 
-Package: elementary-redshift
+Package: com.github.sgpthomas.elementary-redshift
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Enhances: switchboard
