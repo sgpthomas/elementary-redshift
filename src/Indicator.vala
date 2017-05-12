@@ -134,12 +134,12 @@
 		private void update_icon () {
 			if ("Day" in Indicator.settings.period) {
 				message ("day");
-				// display_widget = new Wingpanel.Widgets.OverlayIcon ("brightness-display-symbolic");
-				display_widget.icon_name = "brightness-display-symbolic";
+				// display_widget.icon_name = "brightness-display-symbolic";
+				display_widget.icon_name = "redshift-off-symbolic";
 			} else {
 				message ("night");
-                // display_widget = new Wingpanel.Widgets.OverlayIcon ("weather-clear-night-symbolic");
-				display_widget.icon_name = "weather-clear-night-symbolic";
+				// display_widget.icon_name = "weather-clear-night-symbolic";
+				display_widget.icon_name = "redshift-on-symbolic";
 			}
 		}
     }
