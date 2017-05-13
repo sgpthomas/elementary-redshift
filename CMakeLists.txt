@@ -10,7 +10,7 @@ set (PLUGCATEGORY "personal")
 # Set the Title to use for the Plug in the Overview and in the Titlebar
 set (PLUGTITLE "Redshift")
 # Set the version for the plug
-set (VERSION "0.1")
+set (VERSION "0.2")
 
 # Set the Title to use for the Indicator (May be used in future features)
 set (INDICATORTITLE "Elementary Redshift")
