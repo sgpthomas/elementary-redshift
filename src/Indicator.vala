@@ -110,6 +110,7 @@
 
             Indicator.settings.notify["active"].connect (() => {
                 active_toggle.set_active (Indicator.settings.active);
+				update_icon ();
             });
 
             // connect to indicator settings to decide when to show indicator
@@ -132,13 +133,11 @@
         }
 
 		private void update_icon () {
-			if ("Day" in Indicator.settings.period) {
-				message ("day");
-				// display_widget.icon_name = "brightness-display-symbolic";
+			if (!Indicator.settings.active) {
+				display_widget.icon_name = "redshift-disabled-symbolic";
+			} else if ("Day" in Indicator.settings.period) {
 				display_widget.icon_name = "redshift-off-symbolic";
 			} else {
-				message ("night");
-				// display_widget.icon_name = "weather-clear-night-symbolic";
 				display_widget.icon_name = "redshift-on-symbolic";
 			}
 		}
